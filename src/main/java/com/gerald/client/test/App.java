@@ -25,7 +25,7 @@ public class App {
             connector.subscribe(".*\\..*");
             connector.rollback();
             
-            int totalEmptyCount = 1000;
+            int totalEmptyCount = 100000;
             
             while(emptyCount < totalEmptyCount) {
                 Message message = connector.getWithoutAck(batchSize);
@@ -70,10 +70,10 @@ public class App {
             
             EventType eventType = rowChange.getEventType();
             
-            System.out.println(String.format("================> binlog[%s:%s] , name[%s,%s] , eventType : %s",
+            System.out.println(String.format("================> binlog[%s:%s] , name[%s,%s] , eventType : %s, serverId = %d",
                     entry.getHeader().getLogfileName(), entry.getHeader().getLogfileOffset(),
                     entry.getHeader().getSchemaName(), entry.getHeader().getTableName(),
-                    eventType));
+                    eventType, entry.getHeader().getServerId()));
             
             for(RowData rowData : rowChange.getRowDatasList()) {
                 if(eventType == EventType.DELETE) {
