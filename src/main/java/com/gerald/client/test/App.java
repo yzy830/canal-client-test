@@ -16,7 +16,7 @@ import com.alibaba.otter.canal.protocol.Message;
 
 public class App {
     public static void main( String[] args ) {
-        CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress(AddressUtils.getHostIp(), 11111), "example", "", "");
+        CanalConnector connector = CanalConnectors.newSingleConnector(new InetSocketAddress("192.168.1.100", 11111), "example", "", "");
         
         int batchSize = 1000;
         int emptyCount = 0;
