@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
+import com.alibaba.otter.canal.client.impl.ClusterCanalConnector;
 import com.alibaba.otter.canal.protocol.Message;
 
 public class CanalConsumer {
@@ -232,7 +233,16 @@ public class CanalConsumer {
             throw new IllegalArgumentException("<batchSize> must be greate than zero, <batchTimeout>, <batchAckSize> cannot be negtive");
         }
         
-        connector = CanalConnectors.newSingleConnector(address, destination, username, password);        
+        connector = CanalConnectors.newClusterConnector(address.getAddress().getHostAddress(), destination, username, password);
+//        connector = CanalConnectors.newSingleConnector(address, destination, username, password);
+        
+        if(connector instanceof ClusterCanalConnector) {
+            ClusterCanalConnector clusterConnector = (ClusterCanalConnector)connector;
+            clusterConnector.setRetryTimes(20);
+            clusterConnector.setSoTimeout(10000);
+            clusterConnector.setRetryInterval(5000);
+        }
+        
         this.consumer = consumer;
         this.filter = filter;
         this.batchSize = batchSize;

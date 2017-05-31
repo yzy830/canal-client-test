@@ -32,8 +32,9 @@ public class Slave {
         
         connection.setAutoCommit(false);
         
-        CanalConsumer canalConsumer = builder.setAddress(new InetSocketAddress("192.168.1.100", 11111))
-                                             .setDestination("example")
+        CanalConsumer canalConsumer = builder.setAddress(new InetSocketAddress("192.168.1.100", 2181))
+                                             .setDestination("master")
+                                             .setBatchAckSize(3)
                .setConsumer((m) -> {
                    try {
                        connection.setAutoCommit(false);
@@ -105,11 +106,12 @@ public class Slave {
     
     private static void insert(Entry entry, RowChange rowChange, Connection conn) {
         if(rowChange.getRowDatasCount() <= 0) {
-            logger.info("entry row with type <INSERT>");
+            logger.info("empty row change with type <INSERT>");
             return;
         }
         
-        String schemaName = entry.getHeader().getSchemaName();
+//        String schemaName = entry.getHeader().getSchemaName();
+        String schemaName = "canal";
         String tableName = entry.getHeader().getTableName();
         for(RowData row : rowChange.getRowDatasList()) {
             if(row.getAfterColumnsCount() <= 0) {
@@ -153,11 +155,12 @@ public class Slave {
     
     private static void delete(Entry entry, RowChange rowChange, Connection conn) {
         if(rowChange.getRowDatasCount() <= 0) {
-            logger.info("entry row with type <INSERT>");
+            logger.info("empty row change with type <DELETE>");
             return;
         }
         
-        String schemaName = entry.getHeader().getSchemaName();
+//        String schemaName = entry.getHeader().getSchemaName();
+        String schemaName = "canal";
         String tableName = entry.getHeader().getTableName();
         for(RowData row : rowChange.getRowDatasList()) {
             if(row.getBeforeColumnsCount() <= 0) {
@@ -192,11 +195,12 @@ public class Slave {
     
     private static void update(Entry entry, RowChange rowChange, Connection conn) {
         if(rowChange.getRowDatasCount() <= 0) {
-            logger.info("entry row with type <INSERT>");
+            logger.info("empty row change with type <UPDATE>");
             return;
         }
         
-        String schemaName = entry.getHeader().getSchemaName();
+//        String schemaName = entry.getHeader().getSchemaName();
+        String schemaName = "canal";
         String tableName = entry.getHeader().getTableName();
         for(RowData row : rowChange.getRowDatasList()) {
             if(row.getAfterColumnsCount() <= 0) {

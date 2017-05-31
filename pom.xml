@@ -25,7 +25,7 @@
     <dependency>
       <groupId>com.alibaba.otter</groupId>
       <artifactId>canal.client</artifactId>
-      <version>1.0.12</version>
+      <version>1.0.24</version>
     </dependency>
     
     <dependency>
@@ -66,7 +66,7 @@
                     <manifest>
                         <addClasspath>true</addClasspath>
                         <classpathPrefix>lib</classpathPrefix>
-                        <mainClass>com.gerald.thinkinjava.java8.Test</mainClass>
+                        <mainClass>com.gerald.client.test.slave.Slave</mainClass>
                     </manifest>
                 </archive>
             </configuration>
